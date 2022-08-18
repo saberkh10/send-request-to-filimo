@@ -1,0 +1,31 @@
+
+import (
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"os"
+)
+
+const serverPort = 4444
+
+func main() {
+	relationship()
+}
+
+func relationship() {
+	url := "https://www.filimo.com/m/94071"
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		fmt.Printf("	could not creat request  : %s \n ", err)
+		os.Exit(1)
+	}
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Printf("err making http request %s \n ", err)
+		os.Exit(1)
+	}
+	defer res.Body.Close()
+	resBody, err := ioutil.ReadAll(res.Body)
+	fmt.Println("response body : \n ", string(resBody))
+	fmt.Println(res)
+}
